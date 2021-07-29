@@ -1,10 +1,10 @@
 import {NavLink} from 'react-router-dom';
 
 export function Header(props) {
-  const SiteNav = props.navigation.map((item) => {
+  const SiteNav = props.navigation.map((item, itemKey) => {
     return (
-      <li className="nav-item">
-        <NavLink to={item.link} className="nav-link" activeClassName="active">
+      <li className="nav-item" key={itemKey}>
+        <NavLink exact to={item.link} className="nav-link" activeClassName="active">
           {item.name}
         </NavLink>
       </li>
