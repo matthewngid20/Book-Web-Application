@@ -4,12 +4,17 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/storage';
 import 'firebase/firestore';
+import { useState } from 'react';
 
 import {Home} from './Home';
 import {About} from './About';
 import { Register } from './Register';
+import {Login} from './Login';
+import { Logout } from './Logout';
 
 export function Content( props ) {
+  const[auth, setAuth] = useState(false );
+  const [user, setUser] = useState();
 
   if(!firebase.apps.length){
     firebase.initializeApp(firebaseConfig);
@@ -21,11 +26,38 @@ export function Content( props ) {
         //do something with the user object 
         var user = userCredential.user;
         console.log(user.uid);
+        setUser(userCredential.user);
+        setAuth(true);
+        props.authHandler( true );
     })
     .catch((error) =>{
         console.log(error);
     })
   }
+
+  const loginUser = (email,password) => {
+    firebase.auth().signInWithEmailAndPassword(email,password)
+    .then((userCredential) => {
+      setUser(userCredential.user)
+      setAuth( true ) 
+      props.authHandler(true)
+    })
+    .catch(( error) => {
+      console.log(error);
+    })
+  }
+
+  const signOut = () => {
+    firebase.auth().signOut()
+    .then( () => {
+      console.log("successfull signed out");
+      setUser(null ) 
+      setAuth(false)
+      props.authHandler( false )
+    })
+  }
+
+  
 
 
   return(
@@ -40,6 +72,12 @@ export function Content( props ) {
         </Route>
         <Route path = "/register">
           <Register handler = {registerUser}/>
+        </Route>
+        <Route path = "/login">
+          <Login handler = {loginUser}/>
+        </Route>
+        <Route path = "/Logout">
+          <Logout handler = {signOut}/>
         </Route>
       </Switch>
     </div>
