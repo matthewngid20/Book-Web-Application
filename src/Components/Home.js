@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 //import axios  from "axios";
 export function Home ( props ) {
   const [ data, setData ] = useState()
-  const dataURL = "http://localhost/sample-project/build/php/book.php"; 
+  const dataURL = "localhost/sample-project/build/php/book.php"; 
 
   useEffect( () => {
     if( !data ) {
@@ -17,7 +17,9 @@ export function Home ( props ) {
       .catch((error) => console.log(error))
     }
   })
-
+  
+  console.log(dataURL);
+  
   if( !data ) {
     return(
       <div className="home">
@@ -31,7 +33,7 @@ export function Home ( props ) {
         <h3>{item.book_title}</h3>
       )
     })
-    return(
+      return(
       <div className="home">
         <h2>Books</h2>
         { Books }
