@@ -1,14 +1,34 @@
 <?php
+
+
+$http_origin = $_SERVER['HTTP_ORIGIN'];
+
+$allowed_domains = array(
+  'http://localhost:3000',
+  'http://localhost',
+);
+
+if (in_array($http_origin, $allowed_domains))
+{  
+    // header("Access-Control-Allow-Origin: $http_origin");
+    // header('Content-Type: application/json');
+}
+
 require('vendor/autoload.php');
 
 use bookstore\Books;
 
 $books = new Books();
 
-$book_results = $books -> getBooks();
+$books_results = $books -> getBooks();
 
-print_r($book_results);
+header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
-echo json_encode($book_results);
+$response = array();
+$response['count'] = count( $books_results);
+$response['books'] = $books_results;
+
+echo json_encode( $response );
 
 ?>

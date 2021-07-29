@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 //import axios  from "axios";
 export function Home ( props ) {
   const [ data, setData ] = useState()
-  const dataURL = "localhost/sample-project/build/php/book.php"; 
+  const dataURL = "http://localhost/sample-project/build/php/book.php"; 
 
   useEffect( () => {
     if( !data ) {
