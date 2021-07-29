@@ -19,7 +19,7 @@ export function Home ( props ) {
   })
   
   console.log(dataURL);
-  
+  console.log(data);
   if( !data ) {
     return(
       <div className="home">
