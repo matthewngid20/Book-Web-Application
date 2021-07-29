@@ -17,8 +17,9 @@ export function Content( props ) {
 
   const registerUser = (email, password) => {
     firebase.auth().createUserWithEmailAndPassword( email,password )
-    .then( ( user ) => {
+    .then( ( userCredential ) => {
         //do something with the user object 
+        var user = userCredential.user;
         console.log(user.uid);
     })
     .catch((error) =>{
