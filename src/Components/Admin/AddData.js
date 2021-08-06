@@ -3,9 +3,12 @@ export function AddData (props) {
     const submitHandler =(event) => {
         event.preventDefault() //Form wont refresh
         const formData = new FormData(event.target)
-        props.handler (formData).then( (response) => console.log('sucess'))
+        const obj = new Object()
+        formData.forEach( (value, key) => { 
+            obj[key] = value 
+        })
+        props.handler (obj).then( (response) => console.log('sucess'))
         .catch( (error) => console.log(error))
-        
     }
 
     return(
@@ -36,13 +39,11 @@ export function AddData (props) {
             <input id = "year" type = "text" name = "year" className = "form-control" placeholder = "Year"/>
             <label htmlFor = "pages"> Pages </label>
             <input id = "pages" type = "number" name = "pages" className = "form-control" placeholder = "Pages"/>
-            <label htmlFor = "year"> Year </label>
-            <input id = "year" type = "number" name = "year" className = "form-control" placeholder = "Year"/>
             <label htmlFor = "cover_image"> Image </label>
-            <input id = "cover_image" type = "number" name = "cover_image" className = "form-control" placeholder = "Cover Image"/>
+            <input id = "cover_image" type = "text" name = "cover_image" className = "form-control" placeholder = "Cover Image"/>
             <div className = "mt-3  buttons d-flex flex-row justify-content-between">
             <button type = "reset" className = "btn btn-secondary"> Reset form</button>
-                <button type = "submit" className = "btn btn-primary"> Add Button</button>
+                <button type = "submit" className = "btn btn-primary"> Add </button>
                 
             </div>
         </form>
