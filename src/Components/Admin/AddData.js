@@ -7,8 +7,27 @@ export function AddData (props) {
         formData.forEach( (value, key) => { 
             obj[key] = value 
         })
-        props.handler (obj).then( (response) => console.log('sucess'))
-        .catch( (error) => console.log(error))
+
+        //upload image and get url
+        if(obj.cover_image){
+            const string = Math.random().toString(36).substr(2,5)
+            const name =  obj.cover_image.name
+            const title = obj.title
+            const path = 'books/' + string + title + name
+            props.imageHandler( path, obj.cover_image )
+            .then ( (url) => {
+                obj.cover_image = url
+                props.handler (obj)
+                .then( (response) => console.log('sucess'))
+                .catch( (error) => console.log(error))
+            })
+            .catch((error) => {console.log(error)
+            })
+        }else{
+            console.log('need image ')
+        }
+
+        
     }
 
     return(
@@ -40,7 +59,7 @@ export function AddData (props) {
             <label htmlFor = "pages"> Pages </label>
             <input id = "pages" type = "number" name = "pages" className = "form-control" placeholder = "Pages"/>
             <label htmlFor = "cover_image"> Image </label>
-            <input id = "cover_image" type = "text" name = "cover_image" className = "form-control" placeholder = "Cover Image"/>
+            <input id = "cover_image" type = "file" name = "cover_image" className = "form-control" placeholder = "Cover Image"/>
             <div className = "mt-3  buttons d-flex flex-row justify-content-between">
             <button type = "reset" className = "btn btn-secondary"> Reset form</button>
                 <button type = "submit" className = "btn btn-primary"> Add </button>

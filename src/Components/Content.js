@@ -31,6 +31,20 @@ export function Content( props ) {
     })
   }
 
+  const storage = firebase.storage();
+
+  //example path 'books/covers/image1.jpg'
+  const addImage = ( path, image ) => {
+    return new Promise ( (resolve, reject)=> {
+      storage.ref( path ).put(image)
+      .then ( () => {
+        storage.ref(path).getDownloadURL()
+        .then( (url) => resolve(url) )
+        .catch( (errors) => reject(errors) )
+      })
+      .catch ( (error) => reject (error))
+    })
+  }
 
   const registerUser = (email, password) => {
     firebase.auth().createUserWithEmailAndPassword( email,password )
@@ -89,7 +103,7 @@ export function Content( props ) {
           <Logout handler = {logoutUser}/>
         </Route>
         <Route path = "/add">
-          <AddData handler = {addData}/>
+          <AddData handler = {addData} imageHandler = {addImage}/>
         </Route>
         <Route path="/about">
           <About />
