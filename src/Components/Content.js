@@ -27,7 +27,7 @@ export function Content( props ) {
     return new Promise( (resolve, reject) => {
       db.collection('books').add( data )
       .then( () => resolve(true) )
-      .catch ((errros) => reject(erros))
+      .catch ((error) => reject(error))
     })
   }
 

@@ -1,8 +1,16 @@
 export function AddData (props) {
 
+    const submitHandler =(event) => {
+        event.preventDefault() //Form wont refresh
+        const formData = new FormData(event.target)
+        props.handler (formData).then( (response) => console.log('sucess'))
+        .catch( (error) => console.log(error))
+        
+    }
+
     return(
         
-        <form id = "add-data">
+        <form id = "add-data" onSubmit ={submitHandler}>
             <h2> Add a book</h2>
             <label htmlFor = "title"> Book Title </label>
             <input id = "title" type = "text" name = "title" className = "form-control" placeholder = "Book title"/>
