@@ -11,6 +11,7 @@ import {About} from './About';
 import { Register } from './Register';
 import {Login} from './Login';
 import { Logout } from './Logout';
+import {AddData} from './Admin/AddData'
 
 export function Content( props ) {
   const[auth, setAuth] = useState(false );
@@ -62,13 +63,10 @@ export function Content( props ) {
 
   return(
     <div className="container">
-      <h1>Hello Content</h1>
+      {/* <h1>Hello Content</h1> */}
       <Switch>
         <Route exact path="/">
           <Home />
-        </Route>
-        <Route path="/about">
-          <About />
         </Route>
         <Route path = "/register">
           <Register handler = {registerUser}/>
@@ -78,6 +76,12 @@ export function Content( props ) {
         </Route>
         <Route path = "/Logout">
           <Logout handler = {signOut}/>
+        </Route>
+        <Route path = "/add">
+          <AddData handler = {AddData}/>
+        </Route>
+        <Route path="/about">
+          <About />
         </Route>
       </Switch>
     </div>

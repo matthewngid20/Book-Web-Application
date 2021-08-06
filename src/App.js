@@ -8,9 +8,10 @@ import {useState} from 'react';
 
 const Nav = [
   {name: "Home", link: "/"},
-  {name: "About", link: "/about"},
   {name: "Register", link: "/register"},
   {name: "Login", link: "/login"},
+  {name: "Add", link: "/add"},
+  {name: "About", link: "/about"}
 ]
 const AuthNav = [
   {name: "Home", link: "/"},
