@@ -4,7 +4,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/storage';
 import 'firebase/firestore';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import {Home} from './Home';
 import {About} from './About';
@@ -16,11 +16,22 @@ import {AddData} from './Admin/AddData'
 export function Content( props ) {
   const[auth, setAuth] = useState(false );
   const [user, setUser] = useState();
+  const [bookData, setBookData] =useState()
 
   if(!firebase.apps.length){
     firebase.initializeApp(firebaseConfig);
   }
 
+  useEffect ( () => {
+    if(!bookData){
+      readData()
+      .then( (data) => {
+        setBookData( data )
+        //console.log(data)
+      })
+      .catch( (error) => console.log(error))
+    }
+  }, [bookData])
   const db = firebase.firestore();
 
   const addData = ( data ) => {
@@ -28,6 +39,33 @@ export function Content( props ) {
       db.collection('books').add( data )
       .then( () => resolve(true) )
       .catch ((error) => reject(error))
+    })
+  }
+
+  const readData = () => {
+    return new Promise ((resolve, reject) => {
+
+      db.collection('books').onSnapshot( (querrySnapShot) => {
+        let books = []
+        querrySnapShot.forEach( (doc) => {
+          let book = doc.data()
+          book.id = doc.id 
+          books.push(book)
+        })
+        resolve(books)
+      })
+      // .then((querrySnapShot) => {
+      //   let books = []
+        // querrySnapShot.forEach( (doc) => {
+        //   let book = doc.data()
+        //   book.id = doc.id
+        //   books.push(book)
+      //     console.log("querrySnapShot" + querrySnapShot)
+      //     console.log("books" + books)
+      //   })
+      //   resolve( books )
+      // })
+      // .catch( (error) => console.log(error))
     })
   }
 
@@ -91,7 +129,7 @@ export function Content( props ) {
       {/* <h1>Hello Content</h1> */}
       <Switch>
         <Route exact path="/">
-          <Home />
+          <Home data = {bookData}/>
         </Route>
         <Route path = "/register">
           <Register handler = {registerUser}/>

@@ -1,8 +1,13 @@
+import { useState } from 'react'
+
 export function AddData (props) {
+    const [message, setMessage] = useState()
+    const [error, setError] = useState (false)
 
     const submitHandler =(event) => {
         event.preventDefault() //Form wont refresh
         const formData = new FormData(event.target)
+        event.target.reset();        
         const obj = new Object()
         formData.forEach( (value, key) => { 
             obj[key] = value 
@@ -18,16 +23,33 @@ export function AddData (props) {
             .then ( (url) => {
                 obj.cover_image = url
                 props.handler (obj)
-                .then( (response) => console.log('sucess'))
-                .catch( (error) => console.log(error))
+                .then( (response) => {
+                    setMessage('The book has been added!')
+                    setError(false)    
             })
-            .catch((error) => {console.log(error)
+                .catch( (error) => {
+                    setMessage('There has been an error')
+                    setError(true)
             })
+        })
+            .catch((error) => console.log(error)
+            )
         }else{
             console.log('need image ')
         }
+    }
 
-        
+    const FeedBack = (props) => {
+        setTimeout( () => {
+            setMessage(null)
+            setError(false)
+        }, props.duration )
+        return (
+            <div className = {(error) ? "alert alert-danger" : "alert alert-success" }
+            style ={ {display: (message) ? "block" : "none" } }>
+                {props.content}
+            </div>
+        )
     }
 
     return(
@@ -64,6 +86,9 @@ export function AddData (props) {
             <button type = "reset" className = "btn btn-secondary"> Reset form</button>
                 <button type = "submit" className = "btn btn-primary"> Add </button>
                 
+            </div>
+            <div className = "my-2">
+                <FeedBack duration ={3000} content ={message}/> 
             </div>
         </form>
 
