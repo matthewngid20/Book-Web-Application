@@ -11,7 +11,10 @@ import {About} from './About';
 import { Register } from './Register';
 import {Login} from './Login';
 import { Logout } from './Logout';
+import { Details } from './Details';
 import {AddData} from './Admin/AddData'
+
+
 
 export function Content( props ) {
   const[auth, setAuth] = useState(false );
@@ -54,18 +57,16 @@ export function Content( props ) {
         })
         resolve(books)
       })
-      // .then((querrySnapShot) => {
-      //   let books = []
-        // querrySnapShot.forEach( (doc) => {
-        //   let book = doc.data()
-        //   book.id = doc.id
-        //   books.push(book)
-      //     console.log("querrySnapShot" + querrySnapShot)
-      //     console.log("books" + books)
-      //   })
-      //   resolve( books )
-      // })
-      // .catch( (error) => console.log(error))
+    })
+  }
+
+  const getDetail = (id) => {
+    return new Promise ( (resolve, reject) => {
+      db.collection('books').doc(id).get()
+      .then( (doc) => {
+        resolve(doc.data())
+      })
+      .catch( (error) => reject (error))
     })
   }
 
@@ -139,6 +140,9 @@ export function Content( props ) {
         </Route>
         <Route path = "/Logout">
           <Logout handler = {logoutUser}/>
+        </Route>
+        <Route path = "/book/:bookId"> 
+          <Details handler = {getDetail}/>
         </Route>
         <Route path = "/add">
           <AddData handler = {addData} imageHandler = {addImage}/>
